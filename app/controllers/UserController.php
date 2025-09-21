@@ -10,13 +10,27 @@ class UserController extends Controller {
     public function __construct()
     {
         parent::__construct();
+        $this->call->helper('common_helper');
+
     }
 
-    public function index()
-    {
+public function index()
+{
+    $q = isset($_GET['q']) ? $_GET['q'] : '';
+
+    if (!empty($q)) {
+        $data['users'] = $this->UserModel->searchUsers($q);
+    } else {
         $data['users'] = $this->UserModel->all();
-        $this->call->view('user/view', $data);    
     }
+
+    $data['query'] = $q;
+
+    $this->call->view('user/view', $data);    
+}
+
+
+
     public function create()
     {
         if($this->io->method() == 'post') {
@@ -58,4 +72,6 @@ class UserController extends Controller {
         $this->UserModel->delete($id);
         redirect('/');
     }
+
+
 }

@@ -14,4 +14,15 @@ class UserModel extends Model {
     {
         parent::__construct();
     }
+
+    public function searchUsers($q)
+    {
+        return $this->db->table($this->table)
+            ->like('username', $q)
+            ->or_like('email', $q)
+            ->get_all();
+    }
+
+
+
 }
