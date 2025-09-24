@@ -14,22 +14,31 @@ class UserController extends Controller {
 
     }
 
-public function index()
-{
-    $q = isset($_GET['q']) ? $_GET['q'] : '';
+    public function index()
+    {
+        $q = isset($_GET['q']) ? $_GET['q'] : '';
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $perPage = 5;
+        $offset = ($page - 1) * $perPage;
 
-    if (!empty($q)) {
-        $data['users'] = $this->UserModel->searchUsers($q);
-    } else {
-        $data['users'] = $this->UserModel->all();
+        if (!empty($q)) {
+            $data['users'] = $this->UserModel->searchUsers($q, $perPage, $offset);
+            $total = $this->UserModel->countSearchUsers($q);
+        } else {
+            $data['users'] = $this->UserModel->getUsers($perPage, $offset);
+            $total = $this->UserModel->countAll();
+        }
+
+        $data['query'] = $q;
+        $data['pagination'] = [
+            'total' => $total,
+            'perPage' => $perPage,
+            'currentPage' => $page,
+            'totalPages' => ceil($total / $perPage)
+        ];
+
+        $this->call->view('user/view', $data);    
     }
-
-    $data['query'] = $q;
-
-    $this->call->view('user/view', $data);    
-}
-
-
 
     public function create()
     {

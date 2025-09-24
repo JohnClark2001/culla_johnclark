@@ -132,16 +132,15 @@
             gap: 8px;
         }
 
-.search-form input {
-    width: 250px;   /* adjust this value (250–300px looks good) */
-    padding: 10px 14px;
-    border: none;
-    border-radius: 6px;
-    outline: none;
-    font-size: 14px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-}
-
+        .search-form input {
+            width: 250px;   /* adjust this value (250–300px looks good) */
+            padding: 10px 14px;
+            border: none;
+            border-radius: 6px;
+            outline: none;
+            font-size: 14px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
 
         .search-btn {
             padding: 10px 16px;
@@ -161,55 +160,60 @@
             box-shadow: 0 5px 10px rgba(0,0,0,0.4);
         }
 
-        /* Pagination modern style */
+        /* Show All styled same as Search */
+        .show-all-btn .search-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            padding: 10px 16px;
+        }
+
+        .show-all-btn .search-btn:hover {
+            background: linear-gradient(135deg, #5a67d8, #6b46c1);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.4);
+        }
+
         .pagination {
             display: flex;
             justify-content: center;
-            margin-top: 20px;
-            gap: 6px;
+            align-items: center;
+            gap: 8px;
+            margin: 25px auto 0;
+            flex-wrap: wrap; /* mobile-friendly */
         }
 
         .pagination .page-link {
-            padding: 8px 14px;
-            background: #fff;
-            color: #333;
-            border-radius: 25px;
-            font-weight: bold;
+            position: relative;
+            padding: 10px 18px;
+            background: #ffffff;
+            color: #4a4a4a;
+            border-radius: 50px;
+            font-weight: 600;
             text-decoration: none;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: all 0.25s ease;
         }
 
         .pagination .page-link:hover {
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: #fff;
-            transform: translateY(-2px);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 14px rgba(0,0,0,0.2);
         }
 
-        .pagination .active {
+        .pagination .page-link.active {
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: #fff;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+            pointer-events: none; /* no click on active */
         }
 
-        /* Show All styled same as Search */
-.show-all-btn .search-btn {
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.3);
-    transition: all 0.3s ease;
-    padding: 10px 16px;
-}
-
-.show-all-btn .search-btn:hover {
-    background: linear-gradient(135deg, #5a67d8, #6b46c1);
-    transform: translateY(-2px);
-    box-shadow: 0 5px 10px rgba(0,0,0,0.4);
-}
 
     </style>
 </head>
@@ -265,6 +269,19 @@
         </tr>
     <?php endif; ?>
 </table>
+<div class="pagination">
+    <?php
+    $queryStr = !empty($query) ? '&q=' . urlencode($query) : '';
+    for ($i = 1; $i <= $pagination['totalPages']; $i++):
+    ?>
+        <a 
+            href="?page=<?= $i . $queryStr ?>" 
+            class="page-link<?= $i == $pagination['currentPage'] ? ' active' : '' ?>">
+            <?= $i ?>
+        </a>
+    <?php endfor; ?>
+</div>
+
 </div>
 </body>
 </html>

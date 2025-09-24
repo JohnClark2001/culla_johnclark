@@ -15,14 +15,33 @@ class UserModel extends Model {
         parent::__construct();
     }
 
-    public function searchUsers($q)
+     public function getUsers($limit, $offset)
     {
         return $this->db->table($this->table)
-            ->like('username', $q)
-            ->or_like('email', $q)
+            ->limit($limit)
+            ->offset($offset)
             ->get_all();
     }
 
+    public function countAll()
+    {
+        return $this->db->table($this->table)->count();
+    }
 
+    public function searchUsers($q, $limit, $offset)
+    {
+        $search = "%$q%";
+        $sql = "SELECT * FROM {$this->table} WHERE username LIKE ? OR email LIKE ? LIMIT ? OFFSET ?";
+        $stmt = $this->db->raw($sql, [$search, $search, $limit, $offset]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
+    public function countSearchUsers($q)
+    {
+        $search = "%$q%";
+        $sql = "SELECT COUNT(*) as total FROM {$this->table} WHERE username LIKE ? OR email LIKE ?";
+        $stmt = $this->db->raw($sql, [$search, $search]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['total'];
+    }
 }
