@@ -68,6 +68,9 @@ img { border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
     border: 1px solid transparent;
     font-weight: 700;
 }
+</style>
+</head>
+<body>
 <div class="pagination">
     <ul>
     <?php
@@ -84,5 +87,5 @@ img { border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
     <?php endfor; ?>
     </ul>
 </div>
-</style>
-</head>
+</body>
+</html>
