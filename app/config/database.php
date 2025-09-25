@@ -59,10 +59,10 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 
 $database['main'] = array(
     'driver'	=> 'mysql',
-    'hostname'	=> '127.0.0.1',
-    'port'		=> '3306',
-    'username'	=> 'root',
-    'password'	=> '',
+    'hostname'	=> 'mysql-4af9033-culla-ab2f.l.aivencloud.com',
+    'port'		=> '25791',
+    'username'	=> 'avnadmint',
+    'password'	=> 'AVNS_c8GyLri2KDlCptwVVh1',
     'database'	=> 'mockdata',
     'charset'	=> 'utf8mb4',
     'dbprefix'	=> '',
