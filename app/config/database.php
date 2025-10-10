@@ -56,7 +56,7 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 |   $database variable.
 |   Example: $database['another_example'] = array('key' => 'value')
 */
-
+/*
 $database['main'] = array(
     // =======================================================
     // 💻 LOCAL DATABASE (Active)
@@ -70,9 +70,9 @@ $database['main'] = array(
     'charset'   => 'utf8mb4',
     'dbprefix'  => '',    
 );
+*/
 
 
-/*
  // =======================================================
  // ☁️ REMOTE DATABASE (Aiven Cloud - Backup / Production)
  // =======================================================
@@ -87,6 +87,6 @@ $database['main'] = array(
     'dbprefix'  => '',
     'path'      => '' // Optional (for SQLite only)
 );
-*/
+
 
 ?>
