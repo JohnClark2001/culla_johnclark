@@ -15,13 +15,27 @@ class UserModel extends Model {
         parent::__construct();
     }
 
-     public function getUsers($limit, $offset)
+    public function getUsers($limit, $offset)
     {
         return $this->db->table($this->table)
+            ->select('id, employee_id, first_name, last_name, username, email, role, created_at')
             ->limit($limit)
             ->offset($offset)
             ->get_all();
     }
+
+    public function getLatestEmployeeId()
+    {
+        // Using raw SQL for clarity
+        $sql = "SELECT employee_id 
+                FROM {$this->table} 
+                WHERE employee_id LIKE 'EMP%' 
+                ORDER BY id DESC 
+                LIMIT 1";
+        $stmt = $this->db->raw($sql);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
 
     public function countAll()
     {
@@ -43,5 +57,12 @@ class UserModel extends Model {
         $stmt = $this->db->raw($sql, [$search, $search]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result['total'];
+    }
+
+    public function getByUsername($username)
+    {
+        $sql = "SELECT * FROM {$this->table} WHERE username = ? LIMIT 1";
+        $stmt = $this->db->raw($sql, [$username]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 }

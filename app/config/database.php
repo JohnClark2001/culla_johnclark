@@ -58,16 +58,35 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 */
 
 $database['main'] = array(
-    'driver'	=> 'mysql',
-    'hostname'	=> 'mysql-4af9033-culla-ab2f.l.aivencloud.com',
-    'port'		=> '25791',
-    'username'	=> 'avnadmin',
-    'password'	=> 'AVNS_c8GyLri2KDlCptwVVh1',
-    'database'	=> 'mockdata',
-    'charset'	=> 'utf8mb4',
-    'dbprefix'	=> '',
-    // Optional for SQLite
-    'path'      => ''
+    // =======================================================
+    // 💻 LOCAL DATABASE (Active)
+    // =======================================================
+    'driver'    => 'mysql',
+    'hostname'  => 'localhost',   // or '127.0.0.1'
+    'port'      => '3306',        // default MySQL port
+    'username'  => 'root',        // default username for local MySQL
+    'password'  => '',            // leave blank unless you set one
+    'database'  => 'mockdata2',    // name of your local database
+    'charset'   => 'utf8mb4',
+    'dbprefix'  => '',    
 );
+
+
+/*
+ // =======================================================
+ // ☁️ REMOTE DATABASE (Aiven Cloud - Backup / Production)
+ // =======================================================
+$database['main'] = array(
+    'driver'    => 'mysql',
+    'hostname'  => 'mysql-4af9033-culla-ab2f.l.aivencloud.com',
+    'port'      => '25791',
+    'username'  => 'avnadmin',
+    'password'  => 'AVNS_c8GyLri2KDlCptwVVh1',
+    'database'  => 'mockdata',
+    'charset'   => 'utf8mb4',
+    'dbprefix'  => '',
+    'path'      => '' // Optional (for SQLite only)
+);
+*/
 
 ?>

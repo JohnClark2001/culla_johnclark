@@ -43,11 +43,18 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 |
 */
 
-$router->get('/', 'UserController::index');
+$router->get('/', 'UserController::login'); // Landing page
+$router->match('/login', 'UserController::login', ['GET', 'POST']); // Optional login route
+$router->get('/logout', 'UserController::logout'); // Logout route
+
+// Admin routes
+$router->get('/get-all', 'UserController::index');
 $router->match('/user/create', 'UserController::create', ['GET', 'POST']);
 $router->match('/user/update/{id}', 'UserController::update', ['GET', 'POST']);
 $router->get('/user/delete/{id}', 'UserController::delete');
 $router->get('/user/search', 'UserController::search');
 $router->get('/user', 'UserController::index');
 
+// Employee route
+$router->get('/user/profile', 'UserController::profile');
 

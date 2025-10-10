@@ -1,315 +1,413 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Employee Directory</title>
+
+    <!-- Inter font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <title>View</title>
+
+    <!-- Bootstrap Icons (lightweight) + Font Awesome (if you still use it elsewhere) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            margin: 0;
-            padding: 20px;
-            color: #fff;
+        /* -------------------------
+           Dark Minimalist - Employee Directory
+           Accent color: #1AEBFF
+           ------------------------- */
+        :root{
+            --bg-start: #0f1724;     /* deep navy */
+            --bg-end:   #111827;     /* slightly lighter */
+            --card:     #0b1220;     /* card surface */
+            --muted:    #94a3b8;     /* muted text */
+            --text:     #e6eef6;     /* main text */
+            --accent:   #1AEBFF;     /* user chosen */
+            --soft:     rgba(255,255,255,0.04);
+            --radius:   10px;
         }
 
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-            text-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+        html,body{
+            height:100%;
+            margin:0;
+            font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            background: linear-gradient(180deg, var(--bg-start), var(--bg-end));
+            color: var(--text);
+            -webkit-font-smoothing:antialiased;
+            -moz-osx-font-smoothing:grayscale;
+            padding: 36px 18px;
         }
 
-        /* Container for the button and table */
+        /* Page title */
+        .page-title {
+            text-align:center;
+            margin: 0 0 28px 0;
+            font-weight:600;
+            letter-spacing: 0.2px;
+            color: var(--text);
+            font-size: 20px;
+        }
+
+        /* Container card */
         .table-container {
-            width: 80%;
+            max-width: 1120px;
             margin: 0 auto;
+            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+            border: 1px solid rgba(255,255,255,0.04);
+            box-shadow: 0 6px 30px rgba(2,6,23,0.6);
+            padding: 22px;
+            border-radius: var(--radius);
+            backdrop-filter: blur(6px);
         }
 
-        /* Add User Button */
-        .add-btn {
-            display: inline-block;
-            margin-bottom: 12px;
-            padding: 12px 20px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-            transition: all 0.3s ease;
+        /* Top bar */
+        .top-bar {
+            display:flex;
+            gap:12px;
+            align-items:center;
+            justify-content:space-between;
+            flex-wrap:wrap;
+            margin-bottom:18px;
         }
+
+        /* Left group (title on small screens) */
+        .top-left {
+            display:flex;
+            gap:12px;
+            align-items:center;
+        }
+
+        .small-tag {
+            font-size:13px;
+            color: var(--muted);
+            background: rgba(255,255,255,0.02);
+            padding:6px 10px;
+            border-radius:8px;
+            border: 1px solid rgba(255,255,255,0.02);
+        }
+
+        /* Add button */
+        .add-btn {
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            background: linear-gradient(180deg, rgba(26,235,255,0.12), rgba(26,235,255,0.10));
+            color: var(--accent);
+            border: 1px solid rgba(26,235,255,0.18);
+            padding:8px 14px;
+            font-weight:600;
+            font-size:14px;
+            border-radius:8px;
+            text-decoration:none;
+            transition: transform .12s ease, box-shadow .12s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .add-btn i { font-size:16px; }
 
         .add-btn:hover {
-            background: linear-gradient(135deg, #5a67d8, #6b46c1);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+            transform: translateY(-4px);
+            box-shadow: 0 6px 22px rgba(26,235,255,0.08);
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            box-shadow: 0px 8px 20px rgba(0,0,0,0.5);
-            border-radius: 10px;
-            overflow: hidden;
-            background: #fff;
-            color: #333;
-        }
-
-        th, td {
-            padding: 15px 20px;
-            text-align: center;
-        }
-
-        th {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            font-size: 18px;
-        }
-
-        tr {
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        tr:nth-child(even) {
-            background: #f9f9f9;
-        }
-
-        tr:nth-child(odd) {
-            background: #f0f0f0;
-        }
-
-        tr:hover {
-            transform: scale(1.02);
-            box-shadow: 0px 5px 15px rgba(0,0,0,0.3);
-            background: #e0f7fa;
-        }
-
-        a {
-            text-decoration: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-        a[href*="update"] {
-            background: #4CAF50;
-            color: white;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-        }
-
-        a[href*="update"]:hover {
-            background: #45a049;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
-        }
-
-        a[href*="delete"] {
-            background: #e53935;
-            color: white;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-        }
-
-        a[href*="delete"]:hover {
-            background: #d32f2f;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
-        }
-        /* Top bar for Add button + Search */
-        .top-bar {
-            display: flex;
-            justify-content: space-between; /* left and right alignment */
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        /* Search Form */
+        /* Search form group */
         .search-form {
-            display: flex;
-            gap: 8px;
+            display:flex;
+            gap:10px;
+            align-items:center;
         }
 
-        .search-form input {
-            width: 250px;   /* adjust this value (250–300px looks good) */
-            padding: 10px 14px;
-            border: none;
-            border-radius: 6px;
-            outline: none;
-            font-size: 14px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        .search-input {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.03);
+            padding:8px 12px;
+            color: var(--text);
+            border-radius:8px;
+            min-width:220px;
+            outline:none;
+            transition: box-shadow .12s ease, border-color .12s ease;
         }
 
-        .search-btn {
-            padding: 10px 16px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.3);
-            transition: all 0.3s ease;
+        .search-input::placeholder { color: rgba(230,238,246,0.35); }
+
+        .search-input:focus {
+            border-color: rgba(26,235,255,0.26);
+            box-shadow: 0 6px 18px rgba(26,235,255,0.04) inset;
         }
 
-        .search-btn:hover {
-            background: linear-gradient(135deg, #5a67d8, #6b46c1);
+        .icon-btn {
+            display:inline-flex;
+            align-items:center;
+            justify-content:center;
+            padding:8px 12px;
+            border-radius:8px;
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.03);
+            color: var(--muted);
+            transition: background .12s ease, color .12s ease, transform .12s ease;
+            cursor:pointer;
+            font-weight:600;
+        }
+
+        .icon-btn:hover {
+            color: var(--accent);
+            border-color: rgba(26,235,255,0.14);
             transform: translateY(-2px);
-            box-shadow: 0 5px 10px rgba(0,0,0,0.4);
         }
 
-        /* Show All styled same as Search */
-        .show-all-btn .search-btn {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 3px 6px rgba(0,0,0,0.3);
-            transition: all 0.3s ease;
-            padding: 10px 16px;
+        .show-all-btn {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.03);
+            color: var(--muted);
+            padding:8px 12px;
+            border-radius:8px;
+            font-weight:600;
+            text-decoration:none;
+            transition: color .12s ease, border-color .12s ease;
         }
 
-        .show-all-btn .search-btn:hover {
-            background: linear-gradient(135deg, #5a67d8, #6b46c1);
+        .show-all-btn:hover {
+            color: var(--accent);
+            border-color: rgba(26,235,255,0.12);
+        }
+
+        /* Table */
+        table {
+            width:100%;
+            border-collapse:collapse;
+            margin-top:6px;
+            overflow:hidden;
+            border-radius:8px;
+        }
+
+        thead th {
+            text-align:center;
+            font-weight:600;
+            font-size:13px;
+            color: rgba(230,238,246,0.9);
+            padding:12px 14px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.01));
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+            letter-spacing: 0.4px;
+        }
+
+        tbody td {
+            text-align:center;
+            padding:12px 14px;
+            font-size:14px;
+            color: var(--text);
+            border-bottom:1px solid rgba(255,255,255,0.02);
+        }
+
+        tbody tr {
+            transition: background .12s ease, transform .12s ease;
+        }
+
+        tbody tr:hover {
+            background: linear-gradient(90deg, rgba(26,235,255,0.02), rgba(255,255,255,0.01));
             transform: translateY(-2px);
-            box-shadow: 0 5px 10px rgba(0,0,0,0.4);
         }
 
+        /* Action buttons (kept compact) */
+        .btn-action {
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            padding:6px 10px;
+            border-radius:8px;
+            font-weight:600;
+            font-size:13px;
+            color: #00121a;
+            text-decoration:none;
+            border:none;
+            cursor:pointer;
+        }
+
+        .btn-edit {
+            background: linear-gradient(180deg, rgba(26,235,255,1), rgba(26,235,255,0.86));
+            color: #041b22; /* dark text on cyan */
+            box-shadow: 0 6px 18px rgba(26,235,255,0.06);
+        }
+        .btn-edit:hover { transform: translateY(-2px); }
+
+        .btn-delete {
+            background: linear-gradient(180deg, rgba(255,96,96,0.12), rgba(255,96,96,0.08));
+            color: #fca5a5;
+            border: 1px solid rgba(255,96,96,0.06);
+        }
+        .btn-delete:hover { color:#fff; transform: translateY(-2px); }
+
+        /* No data row */
+        .no-data {
+            padding: 28px;
+            color: var(--muted);
+            text-align:center;
+            font-style:italic;
+        }
+
+        /* Pagination */
         .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 8px;
-            margin: 25px auto 0;
-            flex-wrap: wrap; /* mobile-friendly */
+            justify-content:center;
+            margin-top:20px;
+            gap:8px;
         }
 
         .pagination .page-link {
-            position: relative;
-            padding: 10px 18px;
-            background: #ffffff;
-            color: #4a4a4a;
-            border-radius: 50px;
-            font-weight: 600;
-            text-decoration: none;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            transition: all 0.25s ease;
+            color: var(--muted);
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.02);
+            padding:8px 12px;
+            border-radius:8px;
+            transition: background .12s ease, color .12s ease, transform .12s ease;
         }
-
         .pagination .page-link:hover {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: #fff;
-            transform: translateY(-2px) scale(1.05);
-            box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+            background: rgba(26,235,255,0.06);
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+        .pagination .page-item.active .page-link {
+            background: linear-gradient(180deg, rgba(26,235,255,0.14), rgba(26,235,255,0.08));
+            color: var(--accent);
+            border-color: rgba(26,235,255,0.12);
+            pointer-events:none;
         }
 
-        .pagination .page-link.active {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: #fff;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.25);
-            pointer-events: none; /* no click on active */
+        /* Responsive tweaks */
+        @media (max-width:780px){
+            .search-input{ min-width:140px; }
+            thead th:nth-child(1), tbody td:nth-child(1) { display:none; } /* hide ID on small screens */
+            .top-bar { gap:10px; }
+            .page-title { font-size:18px; }
         }
-
     </style>
 </head>
 <body>
-    <h1>Welcome to the User Page</h1>
+    <h1 class="page-title">Employee Directory</h1>
 
     <div class="table-container">
-    <!-- Top bar -->
+        <!-- Top bar -->
 <div class="top-bar">
-    <!-- Add New User Button -->
-    <a href="<?= site_url('user/create'); ?>">
-        <button type="button" class="add-btn">+ Add New User</button>
-    </a>
-
-    <!-- Search Form + Show All -->
-    <form action="#" method="get" class="search-form">
-        <input type="text" name="q" placeholder="Search by username or email">
-        <button type="submit" class="search-btn">Search</button>
-        <a href="<?= site_url('user'); ?>" class="show-all-btn">
-            <button type="button" class="search-btn">Show All</button>
+    <div class="top-left">
+        <a href="<?= site_url('user/create'); ?>" class="add-btn" title="Add Employee">
+            <i class="bi bi-person-plus"></i>
+            <span>Add Employee</span>
         </a>
-    </form>
-</div>
-<table>
-    <tr>
-        <th>ID</th>
-        <th>Username</th>
-        <th>Email</th>
-        <th>Action</th>
-    </tr>
+        <span class="small-tag">Records</span>
+    </div>
 
-    <?php if (!empty($users)): ?>
-        <?php foreach ($users as $user): ?>
+    <!-- Right group: search + logout -->
+    <div class="top-right" style="display:flex; gap:10px; align-items:center;">
+        <!-- Search Form -->
+        <form action="#" method="get" class="search-form" role="search" aria-label="Search employees">
+            <input class="search-input" type="text" name="q" placeholder="Search by name or email" value="<?= isset($query) ? htmlspecialchars($query, ENT_QUOTES) : '' ?>">
+            <button type="submit" class="icon-btn" title="Search">
+                <i class="bi bi-search"></i>
+            </button>
+            <a href="<?= site_url('user'); ?>" class="show-all-btn" title="Show all employees">Show All</a>
+        </form>
+
+        <!-- Logout Button -->
+        <a href="<?= site_url('logout'); ?>" class="btn-action btn-logout" style="
+            background: linear-gradient(180deg, rgba(255,96,96,0.12), rgba(255,96,96,0.08));
+            color: #fca5a5;
+            border: 1px solid rgba(255,96,96,0.06);
+            padding: 8px 14px;
+            border-radius: 8px;
+            font-weight:600;
+            text-decoration:none;
+            transition: background .12s ease, color .12s ease, transform .12s ease;
+        " 
+        onclick="return confirm('Are you sure you want to logout?');">
+            <i class="bi bi-box-arrow-right"></i> Logout
+        </a>
+    </div>
+</div>
+
+<!-- Table -->
+<div style="overflow:auto;">
+    <table role="table" aria-label="Employee list">
+        <thead>
             <tr>
-                <td><?= $user['id']; ?></td>
-                <td><?= $user['username']; ?></td>
-                <td><?= $user['email']; ?></td>
-                <td>
-                    <a href="<?= site_url('user/update/'.$user['id']); ?>" title="Edit" class="btn-action btn-edit">
-                        <i class="fas fa-edit"></i> Edit
-                    </a>
-                    <a href="<?= site_url('user/delete/'.$user['id']); ?>" 
-                       onclick="return confirm('Are you sure you want to delete this user?');" 
-                       title="Delete" class="btn-action btn-delete">
-                        <i class="fas fa-trash-alt"></i> Delete
-                    </a>
-                </td>
+                <th scope="col">Employee ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Role</th>
+                <th scope="col">Date Added</th>
+                <th scope="col">Action</th>
             </tr>
-        <?php endforeach; ?>
-    <?php else: ?>
-        <tr>
-            <td colspan="4" class="no-data">🚫 No users found matching your search.</td>
-        </tr>
-    <?php endif; ?>
-</table>
-<div class="d-flex justify-content-center mt-4">
-    <nav>
-        <ul class="pagination">
-            <?php
-            $queryStr = !empty($query) ? '&q=' . urlencode($query) : '';
-            $firstPage = 1;
-            $lastPage = $pagination['totalPages'];
-            $prevPage = max($firstPage, $pagination['currentPage'] - 1);
-            $nextPage = min($lastPage, $pagination['currentPage'] + 1);
-            ?>
-            <!-- First -->
-            <li class="page-item<?= $pagination['currentPage'] == $firstPage ? ' disabled' : '' ?>">
-                <a class="page-link" href="?page=<?= $firstPage . $queryStr ?>" aria-label="First">
-                    First
-                </a>
-            </li>
-            <!-- Previous -->
-            <li class="page-item<?= $pagination['currentPage'] == $firstPage ? ' disabled' : '' ?>">
-                <a class="page-link" href="?page=<?= $prevPage . $queryStr ?>" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
-            </li>
-            <!-- Current Page Only -->
-            <li class="page-item active">
-                <span class="page-link"><?= $pagination['currentPage'] ?></span>
-            </li>
-            <!-- Next -->
-            <li class="page-item<?= $pagination['currentPage'] == $lastPage ? ' disabled' : '' ?>">
-                <a class="page-link" href="?page=<?= $nextPage . $queryStr ?>" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
-            <!-- Last -->
-            <li class="page-item<?= $pagination['currentPage'] == $lastPage ? ' disabled' : '' ?>">
-                <a class="page-link" href="?page=<?= $lastPage . $queryStr ?>" aria-label="Last">
-                    Last
-                </a>
-            </li>
-        </ul>
-    </nav>
+        </thead>
+
+        <tbody>
+            <?php if (!empty($users)): ?>
+                <?php foreach ($users as $user): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($user['employee_id'] ?? '', ENT_QUOTES); ?></td>
+                        <td><?= htmlspecialchars(($user['first_name'] ?? '') . ' ' . ($user['last_name'] ?? ''), ENT_QUOTES); ?></td>
+                        <td><?= htmlspecialchars($user['email'] ?? '', ENT_QUOTES); ?></td>
+                        <td><?= ucfirst(htmlspecialchars($user['role'] ?? '', ENT_QUOTES)); ?></td>
+                        <td><?= !empty($user['created_at']) ? date('M d, Y', strtotime($user['created_at'])) : '-'; ?></td>
+                        <td>
+                            <a href="<?= site_url('user/update/'.$user['id']); ?>" title="Edit" class="btn-action btn-edit">
+                                <i class="bi bi-pencil-square"></i> Edit
+                            </a>
+
+                            <a href="<?= site_url('user/delete/'.$user['id']); ?>"
+                            onclick="return confirm('Are you sure you want to delete this record?');"
+                            title="Delete" class="btn-action btn-delete">
+                                <i class="bi bi-trash"></i> Delete
+                            </a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="6" class="no-data">
+                        <i class="bi bi-exclamation-circle" style="margin-right:8px; color: rgba(255,255,255,0.12)"></i>
+                        No employees found matching your search.
+                    </td>
+                </tr>
+            <?php endif; ?>
+        </tbody>
+    </table>
 </div>
-</div>
+
+        <!-- Pagination -->
+        <div class="d-flex justify-content-center mt-3">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <?php
+                    $queryStr = !empty($query) ? '&q=' . urlencode($query) : '';
+                    $firstPage = 1;
+                    $lastPage = $pagination['totalPages'];
+                    $prevPage = max($firstPage, $pagination['currentPage'] - 1);
+                    $nextPage = min($lastPage, $pagination['currentPage'] + 1);
+                    ?>
+                    <li class="page-item<?= $pagination['currentPage'] == $firstPage ? ' disabled' : '' ?>">
+                        <a class="page-link" href="?page=<?= $firstPage . $queryStr ?>" aria-label="First">First</a>
+                    </li>
+
+                    <li class="page-item<?= $pagination['currentPage'] == $firstPage ? ' disabled' : '' ?>">
+                        <a class="page-link" href="?page=<?= $prevPage . $queryStr ?>" aria-label="Previous">&laquo;</a>
+                    </li>
+
+                    <li class="page-item active">
+                        <span class="page-link" aria-current="page"><?= $pagination['currentPage'] ?></span>
+                    </li>
+
+                    <li class="page-item<?= $pagination['currentPage'] == $lastPage ? ' disabled' : '' ?>">
+                        <a class="page-link" href="?page=<?= $nextPage . $queryStr ?>" aria-label="Next">&raquo;</a>
+                    </li>
+
+                    <li class="page-item<?= $pagination['currentPage'] == $lastPage ? ' disabled' : '' ?>">
+                        <a class="page-link" href="?page=<?= $lastPage . $queryStr ?>" aria-label="Last">Last</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
 </body>
 </html>
